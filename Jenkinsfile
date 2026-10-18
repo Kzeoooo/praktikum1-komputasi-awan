@@ -1,25 +1,25 @@
 pipeline {
   agent any
   environment {
-    IMAGE_NAME = 'Kzeoooo/simple-app'
+    IMAGE_NAME = 'kzeoooo/simple-app'
     REGISTRY_CREDENTIALS = 'dockerhub-credentials'
   }
   stages {
-    stage('Checkout SCM') {  
-      steps {  
-        checkout scm  
-      }  
+    stage('Checkout SCM') { 
+      steps { 
+        checkout scm 
+      } 
     }
     
-    stage('Validate App & Database') {  
-      steps {  
-        bat 'echo "Memeriksa file aplikasi Flask dan skema database SQLite..."'  
-      }  
+    stage('Validate App & Database') { 
+      steps { 
+        bat 'echo "Memeriksa file aplikasi Flask dan skema database SQLite..."' 
+      } 
     }
     
     stage('Build Docker Image') {
-      steps {  
-        bat "docker build -t %IMAGE_NAME%:%BUILD_NUMBER% -t %IMAGE_NAME%:latest ."  
+      steps { 
+        bat "docker build -t %IMAGE_NAME%:%BUILD_NUMBER% ." 
       }
     }
     
@@ -27,14 +27,9 @@ pipeline {
       steps {
         withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIALS,
             usernameVariable: 'USER', passwordVariable: 'PASS')]) {
-          
-          // Gunakan satu metode login yang bersih dengan --password-stdin
-          bat 'echo %PASS%| docker login -u %USER% --password-stdin'
-          
-          // Push image berdasarkan nomor build
+          bat 'docker login -u %USER% -p %PASS%'
           bat "docker push %IMAGE_NAME%:%BUILD_NUMBER%"
-          
-          // Push image dengan tag latest
+          bat "docker tag %IMAGE_NAME%:%BUILD_NUMBER% %IMAGE_NAME%:latest"
           bat "docker push %IMAGE_NAME%:latest"
         }
       }
