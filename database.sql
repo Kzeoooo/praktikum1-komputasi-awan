@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS user (
 );
 
 -- Insert Data Awal (Dummy Data)
-INSERT INTO user (username, password) VALUES ('fakhriizzulhaq', 'password123');
-INSERT INTO user (username, password) VALUES ('asprak_kompus', 'asprak2026');
-INSERT INTO user (username, password) VALUES ('budi_santoso', 'budi123');
-INSERT INTO user (username, password) VALUES ('caca_marica', 'caca456');
-INSERT INTO user (username, password) VALUES ('dewi_lestari', 'dewi789');
+INSERT INTO user (username, password) VALUES ('bryanzefanyamaitimu', 'password123');
+INSERT INTO user (username, password) VALUES ('asprak_gacor', 'asprak');
+INSERT INTO user (username, password) VALUES ('budi_yanto', 'budi123');
+INSERT INTO user (username, password) VALUES ('merica_pedes', 'caca456');
+INSERT INTO user (username, password) VALUES ('salma_imup', 'dewi789');
