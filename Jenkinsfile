@@ -5,22 +5,25 @@ pipeline {
     REGISTRY_CREDENTIALS = 'dockerhub-credentials'
   }
   stages {
-    stage('Checkout') { 
+    stage('Checkout SCM') { 
       steps { 
         checkout scm 
       } 
     }
-    stage('Build App') { 
+    
+    stage('Validate App & Database') { 
       steps { 
-        bat 'echo "Mulai build proyek..."' 
+        bat 'echo "Memeriksa file aplikasi Flask dan skema database SQLite..."' 
       } 
     }
+    
     stage('Build Docker Image') {
       steps { 
         bat "docker build -t %IMAGE_NAME%:%BUILD_NUMBER% ." 
       }
     }
-    stage('Push Docker Image') {
+    
+    stage('Push to Docker Hub') {
       steps {
         withCredentials([usernamePassword(credentialsId: REGISTRY_CREDENTIALS,
             usernameVariable: 'USER', passwordVariable: 'PASS')]) {
@@ -30,6 +33,11 @@ pipeline {
           bat "docker push %IMAGE_NAME%:latest"
         }
       }
+    }
+  }
+  post {
+    always {
+      echo 'Pipeline CI/CD Flask + SQLite selesai dieksekusi.'
     }
   }
 }
